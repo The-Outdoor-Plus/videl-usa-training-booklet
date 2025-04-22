@@ -1,0 +1,56 @@
+.feature-details {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.97); /* Slightly less transparent */
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(20px); /* Start slightly below */
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none; /* Cannot interact when hidden */
+  z-index: 10; /* Ensure details are above hotspots */
+  max-height: 30%; /* Limit height */
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.feature-details.visible {
+  opacity: 1;
+  transform: translateY(0); /* Move to final position */
+  pointer-events: auto; /* Allow interaction when visible */
+}
+
+.feature-details h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.feature-details p {
+  margin-bottom: 15px;
+  font-size: 0.95em;
+  line-height: 1.5;
+  color: #555;
+}
+
+.feature-details .close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.8em;
+  line-height: 1;
+  color: #777;
+  cursor: pointer;
+  padding: 0;
+}
+
+.feature-details .close-button:hover,
+.feature-details .close-button:focus {
+  color: #333;
+  outline: none;
+} 

@@ -1,0 +1,40 @@
+.product-interactive-viewer {
+  /* Remove width: 100% - let max/min-width and flex centering handle it */
+  /* width: 100%; */
+  max-width: 1200px; /* Keep max-width for larger screens */
+  aspect-ratio: 5 / 3; /* Example: Adjust based on your image */
+  overflow: hidden; /* Crucial: Hides the zoomed image parts */
+  position: relative; /* For positioning hotspots and details */
+  margin: 0 auto; /* Restore margin auto for centering within scroll wrapper */
+
+  /* Add minimum dimensions */
+  min-width: 600px; /* Keep minimum width */
+  min-height: 450px; /* Example minimum height (based on 4:3 AR) */
+  
+  /* Ensure it doesn't shrink below min-width due to flexbox */
+  flex-shrink: 0; 
+}
+
+.image-wrapper {
+  width: 100%;
+  height: 100%;
+  /* GSAP will control transform */
+  /* Default transform-origin is center, which is usually fine */
+  position: relative; /* For absolute positioning of hotspots */
+  /* Ensure both transform and opacity are hinted */
+  will-change: transform, opacity;
+  cursor: grab; /* Indicate panning is possible (optional) */
+}
+
+.image-wrapper.grabbing {
+  cursor: grabbing; /* Optional: change cursor during pan */
+}
+
+.image-wrapper img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Or cover */
+  user-select: none; /* Prevent image selection */
+  -webkit-user-drag: none; /* Prevent image dragging */
+} 

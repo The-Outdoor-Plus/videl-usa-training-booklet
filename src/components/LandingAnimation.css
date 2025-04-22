@@ -1,0 +1,25 @@
+.landing-animation-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.landing-logo {
+  position: relative;
+  max-width: 80%;
+  width: 300px; 
+  height: auto;
+  opacity: 0;
+  will-change: opacity; 
+}
+
+/* Remove legacy content wrapper style */
+/* .legacy-content-wrapper { ... } */ 

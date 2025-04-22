@@ -1,0 +1,109 @@
+/* Remove pulse animation */
+/*
+@keyframes pulse-aura {
+  0% {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(0, 123, 255, 0.6);
+  }
+  70% {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 0 0 15px rgba(0, 123, 255, 0);
+  }
+  100% {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 0 0 0 rgba(0, 123, 255, 0);
+  }
+}
+*/
+
+.hotspot {
+  position: absolute;
+  background-color: transparent; /* Remove background */
+  color: #333; /* Dark text color */
+  border: none;
+  border-radius: 0; /* No rounding needed for text */
+  cursor: pointer;
+  transform: translate(-50%, -50%) scale(1);
+  transition: transform 0.2s ease, color 0.2s ease; /* Transition color */
+  z-index: 5;
+  box-sizing: border-box;
+  padding: 2px 4px; /* Adjust padding for text */
+  font-size: 12px; /* Adjust font size */
+  font-weight: 600; /* Make text slightly bolder */
+  white-space: nowrap;
+  box-shadow: none; /* Remove shadow */
+  opacity: 1;
+  text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.7); /* Add subtle white glow for readability */
+  text-decoration: underline;
+}
+
+.hotspot.non-interactive {
+  cursor: default !important;
+  pointer-events: none !important;
+  text-decoration: none !important;
+}
+
+.hotspot.non-interactive:hover {
+  transform: translate(-50%, -50%) scale(1); /* No scale on hover */
+  color: #333; /* Blacker text on hover */
+  z-index: 5;
+  text-shadow: 0px 0px 3px rgba(255, 255, 255, 0.7); /* Add subtle white glow for readability */
+  cursor: default !important;
+}
+
+/* Remove inner circle style */
+/* 
+.hotspot::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 6px; 
+  height: 6px;
+  background-color: #0b2d5e; 
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+*/
+
+.hotspot:hover {
+  transform: translate(-50%, -50%) scale(1.15) !important; /* Slightly larger scale */
+  color: #000; /* Blacker text on hover */
+  z-index: 6;
+  text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.9); /* Brighter glow on hover */
+}
+
+.hotspot:focus {
+  outline: none;
+  color: #0056b3; /* Different color for focus */
+  text-decoration: underline; /* Underline for focus */
+  z-index: 6;
+}
+
+/* Styles for zoomed state - keep fade out */
+.zoomed-in .hotspot {
+  opacity: 0;
+  pointer-events: none;
+  /* transition: opacity 0.3s ease; */ // Keep transition removed
+}
+
+/* Responsive adjustments for hotspots */
+@media (max-width: 768px) {
+  .hotspot {
+    font-size: 11px; /* Slightly smaller font on medium screens */
+    padding: 3px 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hotspot {
+    font-size: 9px; /* Even smaller font on small screens */
+    padding: 2px 4px;
+    /* Consider adding a max-width to prevent very long labels */
+    /* max-width: 80px; */ 
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+  }
+}
+
+/* Remove active styles if not needed for text */
+/* 
+.zoomed-in .hotspot.active { ... } 
+*/

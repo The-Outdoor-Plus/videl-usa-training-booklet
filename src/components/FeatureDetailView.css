@@ -1,0 +1,118 @@
+.feature-detail-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: rgba(255, 255, 255, 0.98); */ /* Remove overall background */
+  background-color: transparent;
+  z-index: 20; /* Above everything else */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  box-sizing: border-box;
+  /* Start hidden, controlled by GSAP and isVisible prop */
+  opacity: 0;
+  pointer-events: none;
+  will-change: opacity, transform; /* Hint browser about animations */
+}
+
+.feature-detail-view.visible {
+    pointer-events: auto; /* Allow interaction when visible */
+}
+
+.close-view-button {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+  font-size: 2.5em;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.close-view-button:hover {
+    color: #000;
+}
+
+.view-content {
+    display: flex;
+    flex-direction: row; /* Side-by-side layout */
+    align-items: center; /* Vertically center content */
+    gap: 40px; /* Space between text and image */
+    max-width: 1000px; /* Limit content width */
+    width: 100%;
+}
+
+.text-content {
+    flex: 1; /* Take up available space */
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.85); /* Add semi-transparent white background to text */
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    width: 60%;
+    
+    /* Add scroll behavior */
+    max-height: 70vh; /* Limit height relative to viewport */
+    overflow-y: auto; /* Enable vertical scroll if content exceeds max-height */
+}
+
+.text-content h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 2em;
+    color: #942424;
+    text-transform: uppercase;
+}
+
+.text-content p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    color: #444;
+}
+
+.image-content {
+    flex: 1; /* Take up available space */
+    max-width: 40%; /* Limit image size relative to container */
+}
+
+.image-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 70vh; /* Limit image height */
+    object-fit: contain;
+    border-radius: 8px;
+    /* Keep shadow on image */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+}
+
+/* Responsive adjustments (example) */
+@media (max-width: 768px) {
+    .view-content {
+        flex-direction: column; /* Stack text and image */
+        gap: 20px;
+        max-width: 90%;
+    }
+
+    .text-content {
+        text-align: center;
+    }
+
+    .image-content {
+        max-width: 80%;
+        order: -1; /* Show image first */
+    }
+
+    .text-content h2 {
+        font-size: 1.6em;
+    }
+    .text-content p {
+        font-size: 1em;
+    }
+} 

@@ -1,0 +1,106 @@
+.legacy-section {
+  width: 100%;
+  min-height: 100vh; /* Ensure it takes full viewport height */
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  position: relative; /* For positioning overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px; /* Add padding */
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent internal elements causing overflow */
+}
+
+.legacy-text-overlay {
+  max-width: 800px; /* Limit text width */
+  width: 100%; /* Allow shrinking but respect max-width */
+  box-sizing: border-box; /* Include padding in width calculation */
+  text-align: left;
+  color: white; /* Text color on dark background */
+  padding: 30px;
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Semi-transparent dark overlay */
+  border-radius: 8px;
+  /* Make overlay a flex container to position logo at bottom */
+  display: flex;
+  flex-direction: column;
+  opacity: 0; /* Start hidden */
+  transform: translateY(20px); /* Optional: Start slightly down */
+  will-change: opacity, transform; /* Hint animation */
+}
+
+.videl-usa-subtitle {
+  color: #e43e30; /* Example red color */
+  font-weight: bold;
+  margin-bottom: 5px;
+  letter-spacing: 1px;
+}
+
+.legacy-text-overlay h1 {
+  font-size: 3.5em; /* Large heading */
+  margin: 0;
+  font-weight: bold;
+  line-height: 1.1;
+}
+
+.legacy-text-overlay h2 {
+  font-size: 1.8em;
+  margin: 0 0 25px 0;
+  font-weight: normal;
+  border-bottom: 2px solid white; /* Underline */
+  display: inline-block; /* Fit underline to text */
+  padding-bottom: 5px;
+}
+
+.legacy-text-overlay p {
+  font-size: 1.1em;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.behind-name {
+  margin-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  padding-top: 20px;
+  margin-bottom: 30px; /* Add space before logo */
+}
+
+.behind-name h3 {
+  color: #e43e30; /* Example red color */
+  margin: 0 0 5px 0;
+  font-size: 1em;
+}
+
+.behind-name p {
+  font-size: 1em;
+  margin: 0;
+}
+
+.legacy-logo {
+  display: block; /* Make it a block element */
+  width: 150px; /* Control logo size */
+  height: auto;
+  margin-top: auto; /* Push logo to the bottom of the flex container */
+  align-self: flex-start; /* Align logo left */
+  opacity: 0; /* Ensure starts hidden */
+  will-change: opacity; /* Hint animation */
+  /* Remove CSS transition - let GSAP handle it */
+  /* transition: opacity 0.8s ease 0.5s; */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .legacy-text-overlay h1 {
+    font-size: 2.5em;
+  }
+  .legacy-text-overlay h2 {
+    font-size: 1.4em;
+  }
+  .legacy-text-overlay p {
+    font-size: 1em;
+  }
+  .legacy-text-overlay {
+    padding: 20px;
+  }
+} 
