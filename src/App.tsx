@@ -1,4 +1,3 @@
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // Ensure GSAP plugins are registered somewhere before use (e.g., main.tsx)
 // import { gsap } from 'gsap'; 
