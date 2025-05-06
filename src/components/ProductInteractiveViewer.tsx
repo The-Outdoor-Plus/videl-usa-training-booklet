@@ -217,6 +217,7 @@ const ProductInteractiveViewer: React.FC = () => {
             feature={feature}
             onClick={handleZoomToFeature}
             className={`hotspot ${activeFeature?.id === feature.id ? 'active' : ''}`}
+            viewerContainerRef={containerRef}
           />
         ) : (
           <Hotspot
@@ -224,6 +225,7 @@ const ProductInteractiveViewer: React.FC = () => {
             feature={feature}
             nonInteractive={true}
             onClick={() => {}}
+            viewerContainerRef={containerRef}
           />
         ))}
       </div>
