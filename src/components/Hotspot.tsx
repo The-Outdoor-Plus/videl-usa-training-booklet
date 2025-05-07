@@ -9,9 +9,10 @@ interface HotspotProps {
   className?: string; // Add optional className prop
   nonInteractive?: boolean;
   viewerContainerRef?: React.RefObject<HTMLDivElement | null>; // Added viewer container ref
+  isAnimating?: boolean; // Added isAnimating prop
 }
 
-const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInteractive = false, viewerContainerRef }) => {
+const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInteractive = false, viewerContainerRef, isAnimating = false }) => {
   const [isHovering, setIsHovering] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
   const hotspotDivRef = useRef<HTMLDivElement>(null); // Ref for the main hotspot div
@@ -48,8 +49,8 @@ const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInter
             left: '50%',
             transform: 'translateX(-50%)',
             // Ensure other necessary styles for measurement are here if not in CSS
-            width: '120px', // Assuming fixed width from previewStyle object
-            height: '120px', // Assuming fixed height from previewStyle object
+            width: '320px', // Assuming fixed width from previewStyle object
+            height: '320px', // Assuming fixed height from previewStyle object
         };
         let animationTargetY = '-5px'; // Default animation y offset
 
@@ -96,7 +97,7 @@ const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInter
         gsap.to(previewElement, {
           autoAlpha: 1,
           scale: 1,
-          y: animationTargetY,
+          // y: animationTargetY,
           duration: 0.2,
           ease: 'power1.out'
         });
@@ -126,8 +127,8 @@ const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInter
   const previewStyle: React.CSSProperties = {
     // Positioning (bottom, left, transform, top, right) is now mostly dynamic 
     // or set by GSAP. Base appearance styles remain.
-    width: '120px',
-    height: '120px',
+    width: '320px',
+    height: '320px',
     backgroundColor: 'white',
     border: '1px solid #ccc',
     borderRadius: '4px',
@@ -154,9 +155,9 @@ const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInter
       <button
         className={`hotspot ${className || ''}${nonInteractive ? 'non-interactive' : ''}`}
         style={{ position: 'relative', transform: 'translate(-50%, -50%)' }}
-        onClick={() => !nonInteractive && onClick(feature)}
+        onClick={() => !nonInteractive && !isAnimating && onClick(feature)}
         aria-label={nonInteractive ? feature.name : `Zoom to ${feature.name}`}
-        disabled={nonInteractive}
+        disabled={nonInteractive || isAnimating}
       >
         <pre>{feature.name}</pre>
       </button>

@@ -25,6 +25,7 @@ const ProductInteractiveViewer: React.FC = () => {
   const [isDetailViewVisible, setIsDetailViewVisible] = useState(false);
   const [isZoomed, setIsZoomed] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const imageWrapperRef = useRef<HTMLDivElement>(null);
@@ -40,6 +41,9 @@ const ProductInteractiveViewer: React.FC = () => {
   };
 
   const handleZoomToFeature = (feature: Feature) => {
+    if (currentTimeline.current?.isActive() || isAnimating) return;
+    setIsAnimating(true);
+
     console.log('[handleZoomToFeature] Clicked. Checking conditions:', {
         isImageLoaded,
         hasImageRef: !!imageRef.current,
@@ -56,6 +60,7 @@ const ProductInteractiveViewer: React.FC = () => {
         isTimelineActive: currentTimeline.current?.isActive(),
         isActiveFeatureSame: activeFeature?.id === feature.id
       });
+      setIsAnimating(false);
       return;
     }
 
@@ -63,7 +68,10 @@ const ProductInteractiveViewer: React.FC = () => {
     const imageWrapper = imageWrapperRef.current;
     const image = imageRef.current;
 
-    if (!container || !imageWrapper || !image) return;
+    if (!container || !imageWrapper || !image) {
+        setIsAnimating(false);
+        return;
+    }
 
     setActiveFeature(feature);
     setIsZoomed(true);
@@ -105,7 +113,10 @@ const ProductInteractiveViewer: React.FC = () => {
     const targetY = -(containerRect.height / 2) - (targetPixelY_wrapper * ZOOM_PAST_SCALE);
 
     currentTimeline.current = gsap.timeline({
-        onComplete: () => { currentTimeline.current = null; }
+        onComplete: () => { 
+            currentTimeline.current = null;
+            setIsAnimating(false);
+        }
     });
 
     currentTimeline.current.to(imageWrapper, {
@@ -119,24 +130,33 @@ const ProductInteractiveViewer: React.FC = () => {
 
     currentTimeline.current.call(() => {
         setIsDetailViewVisible(true);
-    }, undefined, ZOOM_PAST_DURATION * 0.35);
+    }, undefined, ZOOM_PAST_DURATION * 0.6);
 
     console.log('[handleZoomToFeature] Proceeding with animation for feature:', feature.id);
   };
 
   const handleZoomOut = () => {
-    if (currentTimeline.current?.isActive()) return;
+    if (currentTimeline.current?.isActive() || isAnimating) return;
+    setIsAnimating(true);
 
     const imageWrapper = imageWrapperRef.current;
     const container = containerRef.current;
-    if (!imageWrapper || !container) return;
+    if (!imageWrapper || !container) {
+        setIsAnimating(false);
+        return;
+    }
 
     currentTimeline.current = gsap.timeline({
         onComplete: () => {
-            setActiveFeature(null); 
-            setIsZoomed(false);
-            gsap.set(container.querySelectorAll('.hotspot'), { opacity: 1 });
-            currentTimeline.current = null;
+            requestAnimationFrame(() => {
+                setIsAnimating(false);
+                setActiveFeature(null); 
+                setIsZoomed(false);
+                if (container) { 
+                    gsap.set(container.querySelectorAll('.hotspot'), { opacity: 1 });
+                }
+                currentTimeline.current = null; 
+            });
         }
     });
 
@@ -151,49 +171,43 @@ const ProductInteractiveViewer: React.FC = () => {
         opacity: 1,
         duration: ZOOM_OUT_DURATION,
         ease: 'power3.out',
-    }, '>-0.4');
+    }, '>0.05');
 
     currentTimeline.current.to(container.querySelectorAll('.hotspot'), { 
         opacity: 1, 
         duration: ZOOM_OUT_DURATION * 0.7,
         ease: 'power2.out'
-    }, "<0.2");
+    }, `<${ZOOM_OUT_DURATION * 0.4}`);
   };
 
   useLayoutEffect(() => {
-    // Force-remove any lingering GSAP inline styles before setting new defaults
     if (imageWrapperRef.current) {
         gsap.set(imageWrapperRef.current, { clearProps: "all" });
     }
-    // Set initial/default visual state (important after clearProps)
     gsap.set(imageWrapperRef.current, { scale: 1, x: 0, y: 0, opacity: 1 });
     
-    // Reset internal component state
     setIsZoomed(false);
     setActiveFeature(null);
     setIsDetailViewVisible(false);
-    setIsImageLoaded(false); // Reset image loaded status first
+    setIsImageLoaded(false);
 
-    // Check if image is already loaded (e.g., from cache)
     const imageElement = imageRef.current;
     if (imageElement?.complete && imageElement.naturalWidth > 0) {
-      // If complete and has dimensions, the onLoad event might not fire.
       console.log('[ProductInteractiveViewer] Image already complete, manually setting isImageLoaded = true');
       setIsImageLoaded(true);
     }
-    // The onLoad prop on <img/> handles cases where it loads asynchronously.
 
-    // Cleanup function
+    setIsAnimating(false);
+
     return () => {
       console.log('[ProductInteractiveViewer] Cleanup effect running for:', mainImage);
-      // Kill any active timeline
       currentTimeline.current?.kill();
-      // Clear GSAP props again on cleanup to be thorough
       if (imageWrapperRef.current) {
           gsap.set(imageWrapperRef.current, { clearProps: "all" });
       }
+      setIsAnimating(false);
     }
-  }, [mainImage]); // Dependency array includes mainImage
+  }, [mainImage]);
 
   if (!currentProduct) {
       return <div style={{ padding: '40px', textAlign: 'center' }}><h2>Product not found!</h2></div>;
@@ -218,6 +232,7 @@ const ProductInteractiveViewer: React.FC = () => {
             onClick={handleZoomToFeature}
             className={`hotspot ${activeFeature?.id === feature.id ? 'active' : ''}`}
             viewerContainerRef={containerRef}
+            isAnimating={isAnimating}
           />
         ) : (
           <Hotspot
@@ -226,6 +241,7 @@ const ProductInteractiveViewer: React.FC = () => {
             nonInteractive={true}
             onClick={() => {}}
             viewerContainerRef={containerRef}
+            isAnimating={isAnimating}
           />
         ))}
       </div>
@@ -234,6 +250,7 @@ const ProductInteractiveViewer: React.FC = () => {
         feature={activeFeature}
         isVisible={isDetailViewVisible}
         onClose={handleZoomOut}
+        isAnimating={isAnimating}
       />
     </div>
     </div>
