@@ -1,4 +1,4 @@
-import { Feature, commercialGrillFeatures, fiveBurnerGrillFeatures, fourBurnerGrillFeatures } from './features';
+import { Feature, commercialGrillFeatures, fiveBurnerGrillFeatures, fourBurnerGrillFeatures, griddleFeatures, sideBurnerFeatures } from './features';
 // Interface for a single product
 export interface Product {
   id: string; // Unique ID (e.g., used in URL)
@@ -38,5 +38,19 @@ export const products: Product[] = [
     mainImage: '/features/36-grill-4-burner/36-grill-4-burner.png',
     features: fourBurnerGrillFeatures,
   }, 
+  {
+    id: 'double-side-burner',
+    name: 'Videl Double Side Burner',
+    listImage: '/double-side-burner.png',
+    mainImage: '/features/double-side-burner/double-side-burner.png',
+    features: sideBurnerFeatures,
+  },
+  {
+    id: 'griddle',
+    name: 'Videl 30" Griddle',
+    listImage: '/griddle-v1.png',
+    mainImage: '/features/griddle-v1/griddle-v1.png',
+    features: griddleFeatures,
+  },
   // --- Add more products below ---
 ]; 
