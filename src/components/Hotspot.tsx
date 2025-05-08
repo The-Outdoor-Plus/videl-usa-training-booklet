@@ -52,7 +52,7 @@ const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInter
             width: '320px', // Assuming fixed width from previewStyle object
             height: '320px', // Assuming fixed height from previewStyle object
         };
-        let animationTargetY = '-5px'; // Default animation y offset
+        // let animationTargetY = '-5px'; // Default animation y offset
 
         // Apply base styles for measurement, keeping it invisible
         gsap.set(previewElement, { ...basePreviewStyle, visibility: 'hidden', display: 'block', autoAlpha: 0 });
@@ -68,7 +68,7 @@ const Hotspot: React.FC<HotspotProps> = ({ feature, onClick, className, nonInter
             if (previewRect.top < viewerRect.top) { // Overflowing top
                 dynamicStyleChanges.bottom = 'auto';
                 dynamicStyleChanges.top = '100%';
-                animationTargetY = '5px'; // Animate downwards
+                // animationTargetY = '5px'; // Animate downwards
             } else if (previewRect.bottom > viewerRect.bottom) { // Overflowing bottom
                 dynamicStyleChanges.bottom = '100%';
                 dynamicStyleChanges.top = 'auto';
